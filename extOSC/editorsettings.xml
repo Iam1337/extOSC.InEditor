@@ -1,0 +1,4 @@
+<root autoConnectReceiver="true" autoConnectTransmitter="true">
+  <receiver localPort="7100" />
+  <transmitter remoteHost="127.0.0.1" remotePort="7100" />
+</root>
