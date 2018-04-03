@@ -4,6 +4,7 @@ using UnityEditor;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using extOSC;
 
 namespace extEditorOSC
@@ -31,6 +32,17 @@ namespace extEditorOSC
 			}
 
 			return types.ToArray();
+		}
+
+		public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> callback)
+		{
+			if (enumerable == null || callback == null)
+				return;
+
+			foreach (var value in enumerable)
+			{
+				callback.Invoke(value);
+			}
 		}
 
 		#endregion

@@ -21,6 +21,11 @@ namespace extEditorOSC.Core
 			EditorApplication.update += Update;
 		}
 
+		~OSCEditorBase()
+		{
+			Dispose();
+		}
+
 		public abstract void Connect();
 
 		public abstract void Close();

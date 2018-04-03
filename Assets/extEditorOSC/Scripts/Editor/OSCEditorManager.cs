@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -17,68 +18,25 @@ namespace extEditorOSC
 	{
 		#region Public Vars
 
-		public static OSCEditorReceiver Receiver
+		public static OSCEditorReceiver[] Receivers
 		{
-			get
-			{
-				if (_receiver == null)
-				{
-					_receiver = new OSCEditorReceiver();
-				}
-
-				return _receiver;
-			}
+			get { return _receivers.ToArray(); }
 		}
 
-		public static bool AutoConnectReceiver
+		public static OSCEditorTransmitter[] Transmitters
 		{
-			get { return _autoConnectReceiver; }
-			set { _autoConnectReceiver = value; }
-		}
-
-		public static OSCEditorTransmitter Transmitter
-		{
-			get
-			{
-				if (_transmitter == null)
-				{
-					_transmitter = new OSCEditorTransmitter();
-				}
-
-				return _transmitter;
-			}
-		}
-
-		public static bool AutoConnectTransmitter
-		{
-			get { return _autoConnectTransmitter; }
-			set { _autoConnectTransmitter = value; }
-		}
-
-		public static string SettingsFilePath
-		{
-			get
-			{
-				if (!Directory.Exists(Path.GetDirectoryName(_settingsFilePath)))
-					Directory.CreateDirectory(Path.GetDirectoryName(_settingsFilePath));
-
-				return _settingsFilePath;
-			}
+			get { return _transmitters.ToArray(); }
 		}
 
 		#endregion
 
 		#region Private Methods
 
-		private static readonly string _settingsFilePath = "./extOSC/editorsettings.xml";
+		private static List<OSCEditorReceiver> _receivers = new List<OSCEditorReceiver>();
 
-		private static bool _autoConnectReceiver = true;
+		private static List<OSCEditorTransmitter> _transmitters = new List<OSCEditorTransmitter>();
 
-		private static bool _autoConnectTransmitter = true;
-
-		private static OSCEditorReceiver _receiver;
-
-		private static OSCEditorTransmitter _transmitter;
+		private static readonly string _configsPath = "./extOSC/editorconfigs.json";
 
 		#endregion
 
@@ -86,30 +44,32 @@ namespace extEditorOSC
 
 		static OSCEditorManager()
 		{
-			if (_receiver == null)
+			var directory = Path.GetDirectoryName(_configsPath);
+
+			if (!Directory.Exists(directory))
+				Directory.CreateDirectory(directory);
+
+			if (!File.Exists(_configsPath))
 			{
-				_receiver = new OSCEditorReceiver();
+				var configs = new OSCEditorConfigs();
+				
+				var transmitterConfig =new OSCEditorTransmitterConfig();
+				transmitterConfig.RemoteHost = "127.0.0.1";
+				transmitterConfig.RemotePort = 7100;
+				transmitterConfig.UseBundle = false;
+				transmitterConfig.AutoConnect = true;
+
+				var receiverConfig = new OSCEditorReceiverConfig();
+				receiverConfig.LocalPort = 7100;
+				receiverConfig.AutoConnect = true;
+
+				configs.TransmitterConfigs.Add(transmitterConfig);
+				configs.ReceiverConfigs.Add(receiverConfig);
+
+				File.WriteAllText(_configsPath, JsonUtility.ToJson(configs));
 			}
 
-			if (_transmitter == null)
-			{
-				_transmitter = new OSCEditorTransmitter();
-			}
-
-			if (File.Exists(SettingsFilePath))
-			{
-				LoadSettings();
-			}
-
-			if (_autoConnectReceiver)
-			{
-				_receiver.Connect();
-			}
-
-			if (_autoConnectTransmitter)
-			{
-				_transmitter.Connect();
-			}
+			LoadSettings();
 
 			var componentsTypes = OSCEditorExtensions.GetTypes(typeof(OSCEditorReceiverComponent));
 			foreach (var componentType in componentsTypes)
@@ -117,74 +77,76 @@ namespace extEditorOSC
 				if (componentType.IsAbstract) continue;
 
 				var component = (OSCEditorReceiverComponent)Activator.CreateInstance(componentType);
-				component.InitBinds(_receiver);
+				//component.InitBinds(_receiver);
 			}
 		}
 
 		public static void SaveSettigs()
 		{
-			var document = new XmlDocument();
-			var rootElement = (XmlElement)document.AppendChild(document.CreateElement("root"));
+			var configs = new OSCEditorConfigs();
 
-			var autoConnectReceiverAttribute = document.CreateAttribute("autoConnectReceiver");
-			autoConnectReceiverAttribute.InnerText = _autoConnectReceiver ? "true" : "false";
+			foreach (var receiver in _receivers)
+			{
+				var receiverConfig = new OSCEditorReceiverConfig();
+				receiverConfig.LocalPort = receiver.LocalPort;
+				receiverConfig.AutoConnect = receiver.IsAvaible;
 
-			var autoConnectTransmitterAttribute = document.CreateAttribute("autoConnectTransmitter");
-			autoConnectTransmitterAttribute.InnerText = _autoConnectReceiver ? "true" : "false";
+				configs.ReceiverConfigs.Add(receiverConfig);
+			}
 
-			rootElement.Attributes.Append(autoConnectReceiverAttribute);
-			rootElement.Attributes.Append(autoConnectTransmitterAttribute);
+			foreach (var transmitter in _transmitters)
+			{
+				var transmitterConfig = new OSCEditorTransmitterConfig();
+				transmitterConfig.RemoteHost = transmitter.RemoteHost;
+				transmitterConfig.RemotePort = transmitter.RemotePort;
+				transmitterConfig.UseBundle = transmitter.UseBundle;
+				transmitterConfig.AutoConnect = transmitter.IsAvaible;
 
-			var receiverElement = rootElement.AppendChild(document.CreateElement("receiver"));
+				configs.TransmitterConfigs.Add(transmitterConfig);
+			}
 
-			var localPortAttribute = document.CreateAttribute("localPort");
-			localPortAttribute.InnerText = _receiver.LocalPort.ToString();
 
-			receiverElement.Attributes.Append(localPortAttribute);
+			if (File.Exists(_configsPath))
+				File.Delete(_configsPath);
 
-			var transmitterElement = rootElement.AppendChild(document.CreateElement("transmitter"));
-
-			var remoteHostAttribute = document.CreateAttribute("remoteHost");
-			remoteHostAttribute.InnerText = _transmitter.RemoteHost;
-
-			var remotePortAttribute = document.CreateAttribute("remotePort");
-			remotePortAttribute.InnerText = _transmitter.RemotePort.ToString();
-
-			var useBundleAttribute = document.CreateAttribute("useBundle");
-			useBundleAttribute.InnerText = _transmitter.UseBundle ? "true" : "false";
-
-			transmitterElement.Attributes.Append(remoteHostAttribute);
-			transmitterElement.Attributes.Append(remotePortAttribute);
-			transmitterElement.Attributes.Append(useBundleAttribute);
-
-			document.Save(SettingsFilePath);
+			File.WriteAllText(_configsPath, JsonUtility.ToJson(configs, true));
 		}
 
 		public static void LoadSettings()
 		{
-			var document = new XmlDocument();
-			try
+			if (!File.Exists(_configsPath))
+				return;
+
+			var configs = JsonUtility.FromJson<OSCEditorConfigs>(File.ReadAllText(_configsPath));
+
+			_receivers.ForEach(receiver => { receiver.Close(); receiver.Dispose(); });
+			_receivers.Clear();
+
+			_transmitters.ForEach(transmitter => { transmitter.Close();transmitter.Dispose();});
+			_transmitters.Clear();
+
+			foreach (var receiverConfig in configs.ReceiverConfigs)
 			{
-				document.Load(SettingsFilePath);
+				var receiver = new OSCEditorReceiver();
+				receiver.LocalPort = receiverConfig.LocalPort;
 
-				var rootElement = document.FirstChild;
+				if (receiverConfig.AutoConnect)
+					receiver.Connect();
 
-				_autoConnectReceiver = rootElement.Attributes["autoConnectReceiver"].InnerText == "true";
-				_autoConnectTransmitter = rootElement.Attributes["autoConnectTransmitter"].InnerText == "true";
-
-				var receiverElement = rootElement["receiver"];
-
-				_receiver.LocalPort = int.Parse(receiverElement.Attributes["localPort"].InnerText);
-
-				var transmitterElement = rootElement["transmitter"];
-
-				_transmitter.RemoteHost = transmitterElement.Attributes["remoteHost"].InnerText;
-				_transmitter.RemotePort = int.Parse(transmitterElement.Attributes["remotePort"].InnerText);
-				_transmitter.UseBundle = transmitterElement.Attributes["useBundle"].InnerText == "true";
+				_receivers.Add(receiver);
 			}
-			catch (Exception e)
+
+			foreach (var transmitterConfig in configs.TransmitterConfigs)
 			{
-				Debug.LogFormat("[OSCEditorManager] Error: {0}", e);
+				var transmitter = new OSCEditorTransmitter();
+				transmitter.RemoteHost = transmitterConfig.RemoteHost;
+				transmitter.RemotePort = transmitterConfig.RemotePort;
+				transmitter.UseBundle = transmitterConfig.UseBundle;
+
+				if (transmitterConfig.AutoConnect)
+					transmitter.Connect();
+
+				_transmitters.Add(transmitter);
 			}
 		}
 

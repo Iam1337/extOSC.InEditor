@@ -36,7 +36,7 @@ public class OSCEditorComponentExample : OSCEditorReceiverComponent
 		var message = new OSCMessage("/editor/example");
 		message.AddValue(OSCValue.String("Editor message!"));
 
-		OSCEditorManager.Transmitter.Send(message);
+		//OSCEditorManager.Transmitter.Send(message);
 	}
 
 	#endregion

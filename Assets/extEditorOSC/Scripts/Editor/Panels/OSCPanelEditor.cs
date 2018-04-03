@@ -74,10 +74,17 @@ namespace extEditorOSC.Panels
 			else
 				GUILayout.BeginVertical();
 
-			DrawReceiver(OSCEditorManager.Receiver, wide ? contentRect.width / 2f : 0);
+			foreach (var receiver in OSCEditorManager.Receivers)
+			{
+				DrawReceiver(receiver, wide ? contentRect.width / 2f : 0);
+			}
 
-			DrawTransmitter(OSCEditorManager.Transmitter);
+			foreach (var transmitter in OSCEditorManager.Transmitters)
+			{
+				DrawTransmitter(transmitter);
+			}
 
+			
 			if (wide)
 				GUILayout.EndHorizontal();
 			else
@@ -125,6 +132,7 @@ namespace extEditorOSC.Panels
 			// SETTINGS BOX END
 			EditorGUILayout.EndVertical();
 
+			/*
 			// PARAMETERS BLOCK
 			EditorGUILayout.BeginHorizontal("box");
 
@@ -137,6 +145,7 @@ namespace extEditorOSC.Panels
 
 			// PARAMETERS BLOCK END
 			EditorGUILayout.EndHorizontal();
+			*/
 
 			// SETTINGS BLOCK END
 			EditorGUILayout.EndVertical();
@@ -191,6 +200,7 @@ namespace extEditorOSC.Panels
 			// SETTINGS BOX END
 			EditorGUILayout.EndVertical();
 
+			/*
 			// PARAMETETS BLOCK
 			EditorGUILayout.BeginHorizontal("box");
 
@@ -203,6 +213,7 @@ namespace extEditorOSC.Panels
 
 			// PARAMETERS BLOCK END
 			EditorGUILayout.EndHorizontal();
+			*/
 
 			// SETTINGS BLOCK END
 			EditorGUILayout.EndVertical();
