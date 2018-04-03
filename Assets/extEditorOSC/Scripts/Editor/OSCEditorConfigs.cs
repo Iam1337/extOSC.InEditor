@@ -10,9 +10,11 @@ namespace extEditorOSC
 	{
 		#region Public Vars
 
-		public List<OSCEditorReceiverConfig> ReceiverConfigs = new List<OSCEditorReceiverConfig>();
+		public List<OSCEditorReceiverConfig> Receivers = new List<OSCEditorReceiverConfig>();
 
-		public List<OSCEditorTransmitterConfig> TransmitterConfigs = new List<OSCEditorTransmitterConfig>();
+		public List<OSCEditorTransmitterConfig> Transmitters = new List<OSCEditorTransmitterConfig>();
+
+		public List<OSCEditorComponentConfig> Components = new List<OSCEditorComponentConfig>();
 
 		#endregion
 	}
@@ -47,6 +49,20 @@ namespace extEditorOSC
 		public int RemotePort;
 
 		public bool UseBundle;
+
+		#endregion
+	}
+
+	[Serializable]
+	public class OSCEditorComponentConfig
+	{
+		#region Public Vars
+
+		public string Guid;
+
+		public bool Active;
+
+		public int Index = -1;
 
 		#endregion
 	}

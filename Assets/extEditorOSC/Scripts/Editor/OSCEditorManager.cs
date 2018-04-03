@@ -7,7 +7,6 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 
 using extOSC;
 
@@ -36,7 +35,7 @@ namespace extEditorOSC
 
 		private static List<OSCEditorTransmitter> _transmitters = new List<OSCEditorTransmitter>();
 
-		private static readonly string _configsPath = "./extOSC/editorconfigs.json";
+		private static readonly string _configsPath = "./extOSC/editor.configs.json";
 
 		#endregion
 
@@ -63,8 +62,8 @@ namespace extEditorOSC
 				receiverConfig.LocalPort = 7100;
 				receiverConfig.AutoConnect = true;
 
-				configs.TransmitterConfigs.Add(transmitterConfig);
-				configs.ReceiverConfigs.Add(receiverConfig);
+				configs.Transmitters.Add(transmitterConfig);
+				configs.Receivers.Add(receiverConfig);
 
 				File.WriteAllText(_configsPath, JsonUtility.ToJson(configs));
 			}
@@ -91,7 +90,7 @@ namespace extEditorOSC
 				receiverConfig.LocalPort = receiver.LocalPort;
 				receiverConfig.AutoConnect = receiver.IsAvaible;
 
-				configs.ReceiverConfigs.Add(receiverConfig);
+				configs.Receivers.Add(receiverConfig);
 			}
 
 			foreach (var transmitter in _transmitters)
@@ -102,9 +101,8 @@ namespace extEditorOSC
 				transmitterConfig.UseBundle = transmitter.UseBundle;
 				transmitterConfig.AutoConnect = transmitter.IsAvaible;
 
-				configs.TransmitterConfigs.Add(transmitterConfig);
+				configs.Transmitters.Add(transmitterConfig);
 			}
-
 
 			if (File.Exists(_configsPath))
 				File.Delete(_configsPath);
@@ -125,7 +123,7 @@ namespace extEditorOSC
 			_transmitters.ForEach(transmitter => { transmitter.Close();transmitter.Dispose();});
 			_transmitters.Clear();
 
-			foreach (var receiverConfig in configs.ReceiverConfigs)
+			foreach (var receiverConfig in configs.Receivers)
 			{
 				var receiver = new OSCEditorReceiver();
 				receiver.LocalPort = receiverConfig.LocalPort;
@@ -136,7 +134,7 @@ namespace extEditorOSC
 				_receivers.Add(receiver);
 			}
 
-			foreach (var transmitterConfig in configs.TransmitterConfigs)
+			foreach (var transmitterConfig in configs.Transmitters)
 			{
 				var transmitter = new OSCEditorTransmitter();
 				transmitter.RemoteHost = transmitterConfig.RemoteHost;
@@ -148,6 +146,46 @@ namespace extEditorOSC
 
 				_transmitters.Add(transmitter);
 			}
+		}
+
+		public static OSCEditorTransmitter CreateEditorTransmitter()
+		{
+			var transmitter = new OSCEditorTransmitter();
+
+			_transmitters.Add(transmitter);
+
+			return transmitter;
+		}
+
+		public static void RemoveEditorTransmitter(OSCEditorTransmitter transmitter)
+		{
+			if (!_transmitters.Contains(transmitter))
+				return;
+
+			transmitter.Close();
+			transmitter.Dispose();
+
+			_transmitters.Remove(transmitter);
+		}
+
+		public static OSCEditorReceiver CreateEditorReceiver()
+		{
+			var receiver = new OSCEditorReceiver();
+
+			_receivers.Add(receiver);
+
+			return receiver;
+		}
+
+		public static void RemoveEditorReceiver(OSCEditorReceiver receiver)
+		{
+			if (!_receivers.Contains(receiver))
+				return;
+
+			receiver.Close();
+			receiver.Dispose();
+
+			_receivers.Remove(receiver);
 		}
 
 		#endregion

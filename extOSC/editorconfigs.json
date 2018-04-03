@@ -1,0 +1,26 @@
+{
+    "ReceiverConfigs": [
+        {
+            "AutoConnect": true,
+            "LocalPort": 7100
+        },
+        {
+            "AutoConnect": true,
+            "LocalPort": 7100
+        }
+    ],
+    "TransmitterConfigs": [
+        {
+            "AutoConnect": true,
+            "RemoteHost": "127.0.0.1",
+            "RemotePort": 7100,
+            "UseBundle": false
+        },
+        {
+            "AutoConnect": true,
+            "RemoteHost": "127.0.0.1",
+            "RemotePort": 7101,
+            "UseBundle": false
+        }
+    ]
+}
