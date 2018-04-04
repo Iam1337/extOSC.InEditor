@@ -1,6 +1,6 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
-using System;
+using extOSC.Core;
 
 namespace extEditorOSC.Components
 {
@@ -8,35 +8,31 @@ namespace extEditorOSC.Components
 	{
 		#region Public Vars
 
-		//public void 
+		public OSCEditorTransmitter Transmitter
+		{
+			get { return _transmitter; }
+			set
+			{
+				if (_transmitter == value) return;
+
+				_transmitter = value;
+			}
+		}
 
 		#endregion
 
 		#region Private Vars
 
-
-
-		#endregion
-
-		#region Public Methods
+		private OSCEditorTransmitter _transmitter;
 
 		#endregion
 
 		#region Protected Methods
 
-		protected override void OnEnable()
+		public void Send(OSCPacket packet)
 		{
-			throw new NotImplementedException();
-		}
-
-		protected override void OnChangeIndex(int index)
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override void OnDisable()
-		{
-			throw new NotImplementedException();
+			if (_transmitter != null)
+				_transmitter.Send(packet);
 		}
 
 		#endregion

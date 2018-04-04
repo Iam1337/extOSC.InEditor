@@ -13,5 +13,18 @@
             "UseBundle": false
         }
     ],
-    "Components": []
+    "Components": [
+        {
+            "Guid": "9dcfa6861aeb44eba874c49ebc0483d5",
+            "Type": "OSCEditorReceiverComponentExample",
+            "Index": 0,
+            "Active": true
+        },
+        {
+            "Guid": "4953f3a8853284847accb845571f170b",
+            "Type": "OSCEditorTransmitterComponentExample",
+            "Index": 0,
+            "Active": true
+        }
+    ]
 }

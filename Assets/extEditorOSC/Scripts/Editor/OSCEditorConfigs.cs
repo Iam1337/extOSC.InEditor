@@ -60,9 +60,11 @@ namespace extEditorOSC
 
 		public string Guid;
 
-		public bool Active;
+		public string Type;
 
 		public int Index = -1;
+
+		public bool Active;
 
 		#endregion
 	}

@@ -2,23 +2,22 @@
 
 using UnityEngine;
 
-using UnityEditor;
+using System.Collections.Generic;
 
 using extOSC;
+using extOSC.Core;
 
 using extEditorOSC;
+using extEditorOSC.Components;
 
-public class OSCEditorComponentExample : OSCEditorReceiverComponent
+[OSCEditorComponent("Examples", "Example Receiver Component")]
+public class OSCEditorReceiverComponentExample : OSCEditorReceiverComponent
 {
-	#region Public Methods
+	#region Protected Methods
 
-	public override void InitBinds(OSCEditorReceiver receiver)
+	protected override void PopulateBinds(List<IOSCBind> binds)
 	{
-		// Binding address
-		receiver.Bind("/editor/example", MessageReceive);
-
-		// Register Update method in Editor Update loop.
-		EditorApplication.update += Update;
+		binds.Add(new OSCBind("/editor/example", MessageReceive));
 	}
 
 	#endregion

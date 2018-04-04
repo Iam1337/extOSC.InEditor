@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEditor;
 
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 
-using extOSC;
+using extEditorOSC.Components;
 
 namespace extEditorOSC
 {
@@ -27,6 +27,11 @@ namespace extEditorOSC
 			get { return _transmitters.ToArray(); }
 		}
 
+		public static OSCEditorComponent[] Components
+		{
+			get { return _components.ToArray(); }
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -34,6 +39,8 @@ namespace extEditorOSC
 		private static List<OSCEditorReceiver> _receivers = new List<OSCEditorReceiver>();
 
 		private static List<OSCEditorTransmitter> _transmitters = new List<OSCEditorTransmitter>();
+
+		private static List<OSCEditorComponent> _components = new List<OSCEditorComponent>();
 
 		private static readonly string _configsPath = "./extOSC/editor.configs.json";
 
@@ -68,16 +75,15 @@ namespace extEditorOSC
 				File.WriteAllText(_configsPath, JsonUtility.ToJson(configs));
 			}
 
-			LoadSettings();
-
-			var componentsTypes = OSCEditorExtensions.GetTypes(typeof(OSCEditorReceiverComponent));
+			var componentsTypes = OSCEditorExtensions.GetTypes(typeof(OSCEditorComponent));
 			foreach (var componentType in componentsTypes)
 			{
 				if (componentType.IsAbstract) continue;
 
-				var component = (OSCEditorReceiverComponent)Activator.CreateInstance(componentType);
-				//component.InitBinds(_receiver);
+				_components.Add((OSCEditorComponent) Activator.CreateInstance(componentType));
 			}
+
+			LoadSettings();
 		}
 
 		public static void SaveSettigs()
@@ -102,6 +108,32 @@ namespace extEditorOSC
 				transmitterConfig.AutoConnect = transmitter.IsAvaible;
 
 				configs.Transmitters.Add(transmitterConfig);
+			}
+
+			foreach (var component in _components)
+			{
+				var componentType = component.GetType();
+
+				var componentConfig = new OSCEditorComponentConfig();
+				componentConfig.Type = componentType.FullName;
+				componentConfig.Active = component.Active;
+				componentConfig.Guid = OSCEditorExtensions.GetTypeGUID(componentType);
+
+				var receiverComponent = component as OSCEditorReceiverComponent;
+				if (receiverComponent != null && receiverComponent.Receiver != null)
+				{
+					componentConfig.Index = _receivers.IndexOf(receiverComponent.Receiver);
+				}
+				else
+				{
+					var transmitterComponent = component as OSCEditorTransmitterComponent;
+					if (transmitterComponent != null && transmitterComponent.Transmitter != null)
+					{
+						componentConfig.Index = _transmitters.IndexOf(transmitterComponent.Transmitter);
+					}
+				}
+
+				configs.Components.Add(componentConfig);
 			}
 
 			if (File.Exists(_configsPath))
@@ -146,6 +178,54 @@ namespace extEditorOSC
 
 				_transmitters.Add(transmitter);
 			}
+
+			foreach (var componentConfig in configs.Components)
+			{
+				var componentType = OSCEditorExtensions.GetTypeByGUID(componentConfig.Guid);
+				if (componentType == null || !componentType.IsSubclassOf(typeof(OSCEditorComponent)))
+				{
+					componentType = typeof(OSCEditorManager).Assembly.GetType(componentConfig.Type);
+					if (componentType == null) continue;
+				}
+
+				var component = GetComponent(componentType);
+				if (component == null) continue;
+				
+				var receiverComponent = component as OSCEditorReceiverComponent;
+				if (receiverComponent != null)
+				{
+					receiverComponent.Receiver = GetEditorReceiver(componentConfig.Index);
+				}
+				else
+				{
+					var transmitterComponent = component as OSCEditorTransmitterComponentExample;
+					if (transmitterComponent != null)
+					{
+						transmitterComponent.Transmitter = GetEditorTransmitter(componentConfig.Index);
+					}
+				}
+
+				component.Active = componentConfig.Active;
+			}
+		}
+
+		public static T GetComponent<T>() where T : OSCEditorComponent
+		{
+			return (T) GetComponent(typeof(T));
+		}
+
+		public static OSCEditorComponent GetComponent(Type type)
+		{
+			if (_components == null || _components.Count == 0)
+				return null;
+
+			foreach (var component in _components)
+			{
+				if (component.GetType() == type)
+					return component;
+			}
+
+			return null;
 		}
 
 		public static OSCEditorTransmitter CreateEditorTransmitter()
@@ -168,6 +248,14 @@ namespace extEditorOSC
 			_transmitters.Remove(transmitter);
 		}
 
+		public static OSCEditorTransmitter GetEditorTransmitter(int index)
+		{
+			if (index >= _transmitters.Count ||
+			    index < 0) return null;
+
+			return _transmitters[index];
+		}
+
 		public static OSCEditorReceiver CreateEditorReceiver()
 		{
 			var receiver = new OSCEditorReceiver();
@@ -186,6 +274,14 @@ namespace extEditorOSC
 			receiver.Dispose();
 
 			_receivers.Remove(receiver);
+		}
+
+		public static OSCEditorReceiver GetEditorReceiver(int index)
+		{
+			if (index >= _receivers.Count ||
+			    index < 0) return null;
+
+			return _receivers[index];
 		}
 
 		#endregion

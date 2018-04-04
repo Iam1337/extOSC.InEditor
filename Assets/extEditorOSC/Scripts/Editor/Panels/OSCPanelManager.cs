@@ -7,7 +7,6 @@ using UnityEditor;
 using System.Net;
 
 using extOSC;
-using extOSC.Editor;
 using extOSC.Editor.Panels;
 using extOSC.Editor.Windows;
 
@@ -16,7 +15,7 @@ using extEditorOSC.Core;
 
 namespace extEditorOSC.Panels
 {
-	public class OSCPanelEditor : OSCPanel
+	public class OSCPanelManager : OSCPanel
 	{
 		#region Static Private Vars
 
@@ -46,7 +45,7 @@ namespace extEditorOSC.Panels
 
 		#region Public Methods
 
-		public OSCPanelEditor(OSCWindow parentWindow, string panelId) : base(parentWindow, panelId)
+		public OSCPanelManager(OSCWindow parentWindow, string panelId) : base(parentWindow, panelId)
 		{
 			_localHost = OSCUtilities.GetLocalHost();
 		}

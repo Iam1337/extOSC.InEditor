@@ -11,14 +11,14 @@ using extEditorOSC.Panels;
 
 namespace extEditorOSC.Windows
 {
-	public class OSCWindowEditor : OSCWindow<OSCWindowEditor, OSCPanelEditor>
+	public class OSCWindowComponents : OSCWindow<OSCWindowComponents, OSCPanelComponents>
 	{
 		#region Static Public Methods
 
-		[MenuItem("Window/extEditorOSC/Editor Manager", false, 0)]
+		[MenuItem("Window/extEditorOSC/Editor Components", false, 1)]
 		public static void ShowWindow()
 		{
-			Instance.titleContent = new GUIContent("OSC Editor Manager", OSCEditorTextures.IronWall);
+			Instance.titleContent = new GUIContent("OSC Editor Components", OSCEditorTextures.IronWall);
 			Instance.minSize = new Vector2(250, 200);
 			Instance.Show();
 		}
