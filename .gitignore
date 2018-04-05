@@ -1,4 +1,4 @@
-# extRemoteEditor .gitignore file - 2017
+# extEditorOSC .gitignore file - 2017
 
 # -------
 # FOLDERS
@@ -23,6 +23,8 @@ ExportedObj/
 # -----
 
 # Unity
+
+editor.configs.json
 
 Assembly-CSharp-Editor-vs.csproj
 Assembly-CSharp-Editor.csproj
