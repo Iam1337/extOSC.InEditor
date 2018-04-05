@@ -1,4 +1,6 @@
 # extEditorOSC
+**This project require: [extOSC](http://u3d.as/ADA) (>= 1.8.2 version) asset.**
+
 OSC extension for Unity Editor based on extOSC.
 
 ###### Editors
