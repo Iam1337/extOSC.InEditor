@@ -11,6 +11,7 @@ using extOSC.Editor.Panels;
 using extOSC.Editor.Windows;
 
 using extEditorOSC.Core;
+using extOSC.Editor;
 
 
 namespace extEditorOSC.Panels
@@ -58,41 +59,60 @@ namespace extEditorOSC.Panels
 		{
 			_defaultColor = GUI.color;
 
-			var wide = contentRect.width > 520;
+			EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+			var connect = GUILayout.Button("Connect All", EditorStyles.toolbarButton);
+			GUILayout.Space(5);
+			var disconnect = GUILayout.Button("Disconnect All", EditorStyles.toolbarButton);
+			GUILayout.FlexibleSpace();
+			GUILayout.Label("OSC Editor Manager");
+			//GUI.color = Color.red;
+			//var removeAll = GUILayout.Button("Remove All");
+			//GUI.color = _defaultColor;
+			EditorGUILayout.EndHorizontal();
+
+			if (connect || disconnect)
+			{
+				foreach (var receiver in OSCEditorManager.Receivers)
+				{
+					if (!receiver.IsAvaible && connect) receiver.Connect();
+					if (receiver.IsAvaible && disconnect) receiver.Close();
+				}
+
+				foreach (var transmitter in OSCEditorManager.Transmitters)
+				{
+					if (!transmitter.IsAvaible && connect) transmitter.Connect();
+					if (transmitter.IsAvaible && disconnect) transmitter.Close();
+				}
+			}
+
+
+			//var wide = contentRect.width > 520;
 
 			_scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(10);
+			GUILayout.Space(5);
 
 			GUILayout.BeginVertical();
-			GUILayout.Space(10);
+			GUILayout.Space(5);
 
-			if (wide)
-				GUILayout.BeginHorizontal();
-			else
-				GUILayout.BeginVertical();
-
-			foreach (var receiver in OSCEditorManager.Receivers)
-			{
-				DrawReceiver(receiver, wide ? contentRect.width / 2f : 0);
-			}
-
-			foreach (var transmitter in OSCEditorManager.Transmitters)
-			{
-				DrawTransmitter(transmitter);
-			}
-
+			//if (wide)
+			//	GUILayout.BeginHorizontal();
+			//else
+			GUILayout.BeginVertical();
 			
-			if (wide)
-				GUILayout.EndHorizontal();
-			else
-				GUILayout.EndVertical();
+			DrawReceivers(OSCEditorManager.Receivers);
+			DrawTransmitters(OSCEditorManager.Transmitters);
 
-			GUILayout.Space(10);
+			//if (wide)
+			//	GUILayout.EndHorizontal();
+			//else
 			GUILayout.EndVertical();
 
-			GUILayout.Space(10);
+			GUILayout.Space(5);
+			GUILayout.EndVertical();
+
+			GUILayout.Space(5);
 			GUILayout.EndHorizontal();
 
 			GUILayout.EndScrollView();
@@ -102,12 +122,147 @@ namespace extEditorOSC.Panels
 
 		#region Private Methods
 
-		private void DrawReceiver(OSCEditorReceiver receiver, float width)
+		private void DrawReceivers(OSCEditorReceiver[] receivers)
 		{
-			if (width > 0)
-				GUILayout.BeginVertical("box", GUILayout.Width(width));
+			GUILayout.BeginVertical("box");
+
+			GUI.color = Color.red;
+			GUILayout.BeginVertical("box");
+			GUILayout.Label("Receivers:", OSCEditorStyles.CenterBoldLabel);
+			GUILayout.EndVertical();
+			GUI.color = _defaultColor;
+
+			GUILayout.Space(5f);
+
+			if (receivers.Length > 0)
+			{
+				OSCEditorReceiver removingReceiver = null;
+
+				foreach (var receiver in receivers)
+				{
+					bool remove;
+
+					DrawBase(receiver, out remove);
+					GUILayout.Space(5f);
+
+					if (remove) removingReceiver = receiver;
+				}
+
+				if (removingReceiver != null)
+					OSCEditorManager.RemoveEditorReceiver(removingReceiver);
+			}
 			else
+			{
 				GUILayout.BeginVertical("box");
+				GUILayout.Label("- none -", OSCEditorStyles.CenterLabel);
+				GUILayout.EndVertical();
+			}
+
+			GUILayout.Space(5f);
+
+			GUILayout.BeginVertical("box");
+			GUI.color = Color.green;
+			var addButton = GUILayout.Button("Add Receiver");
+			GUI.color = _defaultColor;
+			GUILayout.EndVertical();
+
+			if (addButton)
+			{
+				OSCEditorManager.CreateEditorReceiver();
+			}
+
+			GUILayout.EndVertical();
+		}
+
+		private void DrawTransmitters(OSCEditorTransmitter[] transmitters)
+		{
+			GUILayout.BeginVertical("box");
+
+			GUI.color = Color.red;
+			GUILayout.BeginVertical("box");
+			GUILayout.Label("Transmitters:", OSCEditorStyles.CenterBoldLabel);
+			GUILayout.EndVertical();
+			GUI.color = _defaultColor;
+
+			GUILayout.Space(5f);
+
+			if (transmitters.Length > 0)
+			{
+				OSCEditorTransmitter removingTransmitter = null;
+
+				foreach (var transmitter in transmitters)
+				{
+					bool remove;
+
+					DrawBase(transmitter, out remove);
+					GUILayout.Space(5f);
+
+					if (remove) removingTransmitter = transmitter;
+				}
+
+				if (removingTransmitter != null)
+				{
+					OSCEditorManager.RemoveEditorTransmitter(removingTransmitter);
+				}
+			}
+			else
+			{
+				GUILayout.BeginVertical("box");
+				GUILayout.Label("- none -", OSCEditorStyles.CenterLabel);
+				GUILayout.EndVertical();
+			}
+
+			GUILayout.Space(5f);
+
+			GUILayout.BeginVertical("box");
+			GUI.color = Color.green;
+			var addButton = GUILayout.Button("Add Receiver");
+			GUI.color = _defaultColor;
+			GUILayout.EndVertical();
+
+			if (addButton)
+			{
+				OSCEditorManager.CreateEditorTransmitter();
+			}
+
+			GUILayout.EndVertical();
+		}
+
+		private void DrawBase(OSCEditorBase editorBase, out bool remove)
+		{
+			remove = false;
+
+			GUILayout.BeginVertical("box");
+
+			GUI.color = editorBase.IsAvaible ? Color.green : Color.yellow;
+			GUILayout.BeginVertical("box");
+			GUILayout.Label(OSCEditorUtils.GetName(editorBase), OSCEditorStyles.CenterBoldLabel);
+			GUILayout.EndVertical();
+			GUI.color = _defaultColor;
+
+			var receiver = editorBase as OSCEditorReceiver;
+			if (receiver != null)
+			{
+				DrawReceiver(receiver, out remove);
+			}
+			else
+			{
+				var transmitter = editorBase as OSCEditorTransmitter;
+				if (transmitter != null)
+				{
+					DrawTransmitter(transmitter, out remove);
+				}
+			}
+
+			GUILayout.EndVertical();
+		}
+
+		private void DrawReceiver(OSCEditorReceiver receiver, out bool remove)
+		{
+			//if (width > 0)
+			//	GUILayout.BeginVertical("box", GUILayout.Width(width));
+			//else
+			//	GUILayout.BeginVertical("box");
 
 			// SETTINGS BLOCK
 			GUILayout.BeginVertical("box");
@@ -152,15 +307,15 @@ namespace extEditorOSC.Panels
 			// CONTROLS
 			EditorGUILayout.LabelField(_controlsContent, EditorStyles.boldLabel);
 
-			DrawControlls(receiver);
+			DrawControlls(receiver, out remove);
 
 			// EDITOR BUTTONS
-			GUI.color = Color.white;
+			GUI.color = _defaultColor;
 
-			GUILayout.EndVertical();
+			//GUILayout.EndVertical();
 		}
 
-		private void DrawTransmitter(OSCEditorTransmitter transmitter)
+		private void DrawTransmitter(OSCEditorTransmitter transmitter, out bool remove)
 		{
 			GUILayout.BeginVertical("box");
 
@@ -220,7 +375,7 @@ namespace extEditorOSC.Panels
 			// CONTROLS
 			EditorGUILayout.LabelField(_controlsContent, EditorStyles.boldLabel);
 
-			DrawControlls(transmitter);
+			DrawControlls(transmitter, out remove);
 
 			// EDITOR BUTTONS
 			GUI.color = Color.white;
@@ -228,31 +383,38 @@ namespace extEditorOSC.Panels
 			GUILayout.EndVertical();
 		}
 
-		private void DrawControlls(OSCEditorBase receiver)
+		private void DrawControlls(OSCEditorBase editorBase, out bool remove)
 		{
-			EditorGUILayout.BeginHorizontal("box");
+			EditorGUILayout.BeginVertical("box");
+			
+			GUI.color = editorBase.IsAvaible ? Color.green : Color.red;
+			var connection = GUILayout.Button(editorBase.IsAvaible ? "Connected" : "Disconnected");
 
-			GUI.color = receiver.IsAvaible ? Color.green : Color.red;
-			var connection = GUILayout.Button(receiver.IsAvaible ? "Connected" : "Disconnected");
+			EditorGUILayout.BeginHorizontal();
 
 			GUI.color = Color.yellow;
-			EditorGUI.BeginDisabledGroup(!receiver.IsAvaible);
+			EditorGUI.BeginDisabledGroup(!editorBase.IsAvaible);
 			var reconect = GUILayout.Button("Reconnect");
 			EditorGUI.EndDisabledGroup();
 
+			GUI.color = Color.red;
+			remove = GUILayout.Button("Remove");
+
 			EditorGUILayout.EndHorizontal();
+
+			EditorGUILayout.EndVertical();
 
 			if (connection)
 			{
-				if (receiver.IsAvaible) receiver.Close();
-				else receiver.Connect();
+				if (editorBase.IsAvaible) editorBase.Close();
+				else editorBase.Connect();
 			}
 
 			if (reconect)
 			{
-				if (receiver.IsAvaible) receiver.Close();
+				if (editorBase.IsAvaible) editorBase.Close();
 
-				receiver.Connect();
+				editorBase.Connect();
 			}
 		}
 

@@ -2,21 +2,23 @@
 
 using extOSC;
 
-using extEditorOSC;
 using extEditorOSC.Components;
 
-[OSCEditorComponent("Examples", "Example Transmitter Component")]
-public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponent
+namespace extEditorOSC.Examples
 {
-	#region Protected Methods
-
-	protected override void Update()
+	[OSCEditorComponent("Examples", "Example Transmitter Component")]
+	public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponent
 	{
-		var message = new OSCMessage("/editor/example");
-		message.AddValue(OSCValue.String("Editor message!"));
+		#region Protected Methods
 
-		Send(message);
+		protected override void Update()
+		{
+			var message = new OSCMessage("/editor/example");
+			message.AddValue(OSCValue.String("Editor message!"));
+
+			Send(message);
+		}
+
+		#endregion
 	}
-
-	#endregion
 }

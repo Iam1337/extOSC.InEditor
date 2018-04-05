@@ -7,11 +7,54 @@ using System.Collections.Generic;
 
 using extOSC;
 
+using extEditorOSC.Core;
+
 namespace extEditorOSC
 {
-	public static class OSCEditorExtensions
+	public static class OSCEditorUtils
 	{
 		#region Static Public Methods
+
+		public static string GetName(OSCEditorBase editorBase)
+		{
+			var receiver = editorBase as OSCEditorReceiver;
+			if (receiver != null)
+			{
+				return string.Format("Editor Receiver: {0}", receiver.LocalPort);
+			}
+
+			var transmitter = editorBase as OSCEditorTransmitter;
+			if (transmitter != null)
+			{
+				return string.Format("Editor Transmitter: {0}:{1}", transmitter.RemoteHost, transmitter.RemotePort);
+			}
+
+			return "- none -";
+		}
+
+		public static Dictionary<string, OSCEditorReceiver> GetReceivers()
+		{
+			var dictionary = new Dictionary<string, OSCEditorReceiver>();
+
+			foreach (var receiver in OSCEditorManager.Receivers)
+			{
+				dictionary.Add(GetName(receiver), receiver);
+			}
+
+			return dictionary;
+		}
+
+		public static Dictionary<string, OSCEditorTransmitter> GetTransmitters()
+		{
+			var dictionary = new Dictionary<string, OSCEditorTransmitter>();
+
+			foreach (var transmitter in OSCEditorManager.Transmitters)
+			{
+				dictionary.Add(GetName(transmitter), transmitter);
+			}
+
+			return dictionary;
+		}
 
 		public static Type[] GetTypes(Type type)
 		{

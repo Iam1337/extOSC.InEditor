@@ -75,7 +75,7 @@ namespace extEditorOSC
 				File.WriteAllText(_configsPath, JsonUtility.ToJson(configs));
 			}
 
-			var componentsTypes = OSCEditorExtensions.GetTypes(typeof(OSCEditorComponent));
+			var componentsTypes = OSCEditorUtils.GetTypes(typeof(OSCEditorComponent));
 			foreach (var componentType in componentsTypes)
 			{
 				if (componentType.IsAbstract) continue;
@@ -115,9 +115,9 @@ namespace extEditorOSC
 				var componentType = component.GetType();
 
 				var componentConfig = new OSCEditorComponentConfig();
-				componentConfig.Type = componentType.FullName;
+				componentConfig.Type = componentType.AssemblyQualifiedName;
 				componentConfig.Active = component.Active;
-				componentConfig.Guid = OSCEditorExtensions.GetTypeGUID(componentType);
+				componentConfig.Guid = OSCEditorUtils.GetTypeGUID(componentType);
 
 				var receiverComponent = component as OSCEditorReceiverComponent;
 				if (receiverComponent != null && receiverComponent.Receiver != null)
@@ -181,7 +181,7 @@ namespace extEditorOSC
 
 			foreach (var componentConfig in configs.Components)
 			{
-				var componentType = OSCEditorExtensions.GetTypeByGUID(componentConfig.Guid);
+				var componentType = OSCEditorUtils.GetTypeByGUID(componentConfig.Guid);
 				if (componentType == null || !componentType.IsSubclassOf(typeof(OSCEditorComponent)))
 				{
 					componentType = typeof(OSCEditorManager).Assembly.GetType(componentConfig.Type);
@@ -198,7 +198,7 @@ namespace extEditorOSC
 				}
 				else
 				{
-					var transmitterComponent = component as OSCEditorTransmitterComponentExample;
+					var transmitterComponent = component as OSCEditorTransmitterComponent;
 					if (transmitterComponent != null)
 					{
 						transmitterComponent.Transmitter = GetEditorTransmitter(componentConfig.Index);
@@ -231,6 +231,7 @@ namespace extEditorOSC
 		public static OSCEditorTransmitter CreateEditorTransmitter()
 		{
 			var transmitter = new OSCEditorTransmitter();
+			transmitter.RemotePort = 7100 + _transmitters.Count;
 
 			_transmitters.Add(transmitter);
 
@@ -259,6 +260,7 @@ namespace extEditorOSC
 		public static OSCEditorReceiver CreateEditorReceiver()
 		{
 			var receiver = new OSCEditorReceiver();
+			receiver.LocalPort = 7100 + _receivers.Count;
 
 			_receivers.Add(receiver);
 
@@ -283,7 +285,7 @@ namespace extEditorOSC
 
 			return _receivers[index];
 		}
-
+		
 		#endregion
 	}
 }

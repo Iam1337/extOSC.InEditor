@@ -16,15 +16,15 @@
     "Components": [
         {
             "Guid": "9dcfa6861aeb44eba874c49ebc0483d5",
-            "Type": "OSCEditorReceiverComponentExample",
+            "Type": "extEditorOSC.Examples.OSCEditorReceiverComponentExample, Assembly-CSharp-Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Index": 0,
-            "Active": true
+            "Active": false
         },
         {
             "Guid": "4953f3a8853284847accb845571f170b",
-            "Type": "OSCEditorTransmitterComponentExample",
+            "Type": "extEditorOSC.Examples.OSCEditorTransmitterComponentExample, Assembly-CSharp-Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Index": 0,
-            "Active": true
+            "Active": false
         }
     ]
 }

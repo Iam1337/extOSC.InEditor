@@ -3,6 +3,7 @@
 using UnityEditor;
 
 using System.Linq;
+using UnityEngine;
 
 namespace extEditorOSC.Components
 {
@@ -122,7 +123,7 @@ namespace extEditorOSC.Components
 			var attribute = (OSCEditorComponentAttribute)attributes[0];
 
 			_name = attribute.Name;
-			_group = attribute.Name;
+			_group = attribute.Group;
 		}
 
 		#endregion
