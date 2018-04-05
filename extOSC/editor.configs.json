@@ -1,13 +1,13 @@
 {
     "Receivers": [
         {
-            "AutoConnect": true,
+            "AutoConnect": false,
             "LocalPort": 7100
         }
     ],
     "Transmitters": [
         {
-            "AutoConnect": true,
+            "AutoConnect": false,
             "RemoteHost": "127.0.0.1",
             "RemotePort": 7100,
             "UseBundle": false
