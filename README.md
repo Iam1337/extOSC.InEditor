@@ -1,4 +1,4 @@
-# extEditorOSC
+# extEditorOSC v1.1
 **This project require: [extOSC](http://u3d.as/ADA) (>= 1.9 version, not released) asset.**
 
 This asset allows you to use all features of extOSC directly into the Unity Editor.
