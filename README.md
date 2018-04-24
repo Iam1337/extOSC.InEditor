@@ -54,7 +54,7 @@ public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponen
 <img src="https://i.imgur.com/6IJlD95.png" width="400"> <img src="https://i.imgur.com/dFH3Vp7.png" width="400">
 
 ## Release Notes
-You can read release notes in [versions.txt](Assets/extEditorOSC/vesrions.txt) file.
+You can read release notes in [versions.txt](Assets/extEditorOSC/versions.txt) file.
 
 ## TODO
 - Documentation
