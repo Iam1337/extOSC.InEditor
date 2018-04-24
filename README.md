@@ -1,5 +1,5 @@
 # extEditorOSC
-**This project require: [extOSC](http://u3d.as/ADA) (>= 1.8.2 version) asset.**
+**This project require: [extOSC](http://u3d.as/ADA) (>= 1.9 version, not released) asset.**
 
 This asset allows you to use all features of extOSC directly into the Unity Editor.
 To create your own OSC Editor Component, you only need to create a subclass from *"OSCEditorReceiverComponent"* or the *"OSCEditorTransmitterComponent"*, and implement all the functions what you need.
@@ -52,6 +52,9 @@ public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponen
 
 ## Screenshots
 <img src="https://i.imgur.com/6IJlD95.png" width="400"> <img src="https://i.imgur.com/dFH3Vp7.png" width="400">
+
+## Release Notes
+You can read release notes in [versions.txt](Assets/extEditorOSC/vesrions.txt) file.
 
 ## TODO
 - Documentation

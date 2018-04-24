@@ -28,9 +28,13 @@ namespace extEditorOSC.Panels
 
 		private static readonly GUIContent _remotePortContent = new GUIContent("Remote Port:");
 
-		//private static readonly GUIContent _mapBundleContent = new GUIContent("Map Bundle:");
+	    private static readonly GUIContent _advancedContent = new GUIContent("Advanced Settings:");
 
-		private static readonly GUIContent _controlsContent = new GUIContent("Controls:");
+        private static readonly GUIContent _localPortModeContent = new GUIContent("Local Port Mode:");
+
+        //private static readonly GUIContent _mapBundleContent = new GUIContent("Map Bundle:");
+
+        private static readonly GUIContent _controlsContent = new GUIContent("Controls:");
 
 		#endregion
 
@@ -354,7 +358,7 @@ namespace extEditorOSC.Panels
 			// SETTINGS BOX END
 			EditorGUILayout.EndVertical();
 
-			/*
+            /*
 			// PARAMETETS BLOCK
 			EditorGUILayout.BeginHorizontal("box");
 
@@ -369,8 +373,35 @@ namespace extEditorOSC.Panels
 			EditorGUILayout.EndHorizontal();
 			*/
 
-			// SETTINGS BLOCK END
-			EditorGUILayout.EndVertical();
+
+		    // ADVANCED SETTIGS BOX
+		    EditorGUILayout.LabelField(_advancedContent, EditorStyles.boldLabel);
+		    GUILayout.BeginVertical("box");
+		    EditorGUI.BeginChangeCheck();
+
+		    // LOCAL PORT MODE
+		    transmitter.LocalPortMode = (OSCEditorLocalPortMode)EditorGUILayout.EnumPopup(_localPortModeContent, transmitter.LocalPortMode);
+
+		    // LOCAL PORT
+		    if (transmitter.LocalPortMode == OSCEditorLocalPortMode.FromRemotePort)
+		    {
+		        // LOCAL FROM REMOTE PORT
+		        GUILayout.BeginHorizontal();
+		        EditorGUILayout.LabelField(_localPortContent, GUILayout.Width(EditorGUIUtility.labelWidth - 4));
+		        EditorGUILayout.SelectableLabel(transmitter.RemotePort.ToString(), GUILayout.Height(EditorGUIUtility.singleLineHeight));
+		        GUILayout.EndHorizontal();
+		    }
+		    else if (transmitter.LocalPortMode == OSCEditorLocalPortMode.Custom)
+		    {
+                // LOCAL PORT
+		        transmitter.LocalPort =  EditorGUILayout.IntField(_localPortContent, transmitter.LocalPort);
+		    }
+
+		    // ADVANCED SETTIGS BOX END
+		    EditorGUILayout.EndVertical();
+
+            // SETTINGS BLOCK END
+            EditorGUILayout.EndVertical();
 
 			// CONTROLS
 			EditorGUILayout.LabelField(_controlsContent, EditorStyles.boldLabel);

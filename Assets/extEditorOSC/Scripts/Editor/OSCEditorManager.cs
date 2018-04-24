@@ -64,6 +64,8 @@ namespace extEditorOSC
 				transmitterConfig.RemotePort = 7100;
 				transmitterConfig.UseBundle = false;
 				transmitterConfig.AutoConnect = true;
+			    transmitterConfig.LocalPortMode = OSCEditorLocalPortMode.FromRemotePort;
+                transmitterConfig.LocalPort = 7100;
 
 				var receiverConfig = new OSCEditorReceiverConfig();
 				receiverConfig.LocalPort = 7100;
@@ -106,6 +108,8 @@ namespace extEditorOSC
 				transmitterConfig.RemotePort = transmitter.RemotePort;
 				transmitterConfig.UseBundle = transmitter.UseBundle;
 				transmitterConfig.AutoConnect = transmitter.IsAvaible;
+			    transmitterConfig.LocalPortMode = transmitter.LocalPortMode;
+			    transmitterConfig.LocalPort = transmitter.LocalPort;
 
 				configs.Transmitters.Add(transmitterConfig);
 			}
@@ -172,6 +176,8 @@ namespace extEditorOSC
 				transmitter.RemoteHost = transmitterConfig.RemoteHost;
 				transmitter.RemotePort = transmitterConfig.RemotePort;
 				transmitter.UseBundle = transmitterConfig.UseBundle;
+			    transmitter.LocalPortMode = transmitterConfig.LocalPortMode;
+			    transmitter.LocalPort = transmitterConfig.LocalPort;
 
 				if (transmitterConfig.AutoConnect)
 					transmitter.Connect();

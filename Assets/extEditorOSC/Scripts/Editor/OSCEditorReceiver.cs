@@ -33,8 +33,6 @@ namespace extEditorOSC
 
 				localPort = value;
 
-				receiverBackend.RefreshConnection(localPort);
-
 				if (receiverBackend.IsRunning && IsAvaible)
 				{
 					Close();
@@ -169,6 +167,7 @@ namespace extEditorOSC
 				{
 					var packet = packets.Dequeue();
 
+                    //TODO: Add bundles.
 					//if (mapBundle != null)
 					//	mapBundle.Map(packet);
 

@@ -2,4 +2,10 @@
 
 namespace extEditorOSC
 {
+    public enum OSCEditorLocalPortMode
+    {
+        FromRemotePort,
+        Random,
+        Custom
+    }
 }

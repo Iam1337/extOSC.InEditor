@@ -10,7 +10,9 @@
             "AutoConnect": false,
             "RemoteHost": "127.0.0.1",
             "RemotePort": 7100,
-            "UseBundle": false
+            "UseBundle": false,
+            "LocalPortMode": 0,
+            "LocalPort": 7100
         }
     ],
     "Components": [

@@ -27,7 +27,53 @@ namespace extEditorOSC
 			}
 		}
 
-		public string RemoteHost
+	    public OSCEditorLocalPortMode LocalPortMode
+	    {
+	        get { return localPortMode; }
+	        set
+	        {
+	            if (localPortMode == value)
+	                return;
+
+	            localPortMode = value;
+
+	            if (IsAvaible)
+	            {
+	                Close();
+	                Connect();
+	            }
+	        }
+	    }
+
+	    public int LocalPort
+	    {
+	        get
+	        {
+	            if (localPortMode == OSCEditorLocalPortMode.Custom)
+	                return localPort;
+	            if (localPortMode == OSCEditorLocalPortMode.Random)
+	                return 0;
+
+	            //TODO: Add return random port.
+
+	            return remotePort;
+            }
+	        set
+	        {
+	            if (localPort == value)
+	                return;
+
+	            localPort = value;
+
+	            if (IsAvaible && localPortMode == OSCEditorLocalPortMode.Custom)
+	            {
+	                Close();
+	                Connect();
+	            }
+	        }
+	    }
+
+        public string RemoteHost
 		{
 			get { return remoteHost; }
 			set
@@ -38,6 +84,12 @@ namespace extEditorOSC
 				remoteHost = value;
 
 				transmitterBackend.RefreshConnection(remoteHost, remotePort);
+
+			    if (IsAvaible && localPortMode == OSCEditorLocalPortMode.FromRemotePort)
+			    {
+                    Close();
+                    Connect();
+			    }
 			}
 		}
 
@@ -63,11 +115,17 @@ namespace extEditorOSC
 			set { useBundle = value; }
 		}
 
-		#endregion
+        #endregion
 
-		#region Protected Vars
+        #region Protected Vars
 
-		[SerializeField]
+	    [SerializeField]
+	    protected OSCEditorLocalPortMode localPortMode = OSCEditorLocalPortMode.FromRemotePort;
+
+	    [SerializeField]
+	    protected int localPort = 0;
+
+        [SerializeField]
 		protected string remoteHost = "127.0.0.1";
 
 		[SerializeField]
@@ -101,7 +159,18 @@ namespace extEditorOSC
 
 		public override void Connect()
 		{
-			transmitterBackend.Connect(remoteHost, remotePort);
+		    var connectLocalPort = remotePort;
+
+		    if (localPortMode == OSCEditorLocalPortMode.Random)
+		    {
+		        connectLocalPort = 0;
+		    }
+		    else if (localPortMode == OSCEditorLocalPortMode.Custom)
+		    {
+		        connectLocalPort = localPort;
+		    }
+
+            transmitterBackend.Connect(connectLocalPort, remoteHost, remotePort);
 		}
 
 		public override void Close()
