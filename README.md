@@ -1,12 +1,21 @@
-# extEditorOSC v1.1
-**This project require: [extOSC](https://github.com/Iam1337/extOSC) asset.**
+# extEditorOSC - Open Sound Control Protocol for Unity Editor
 
+Created by V. Sigalkin (ext)
+
+### What Is extEditorOSC?
 This asset allows you to use all features of extOSC directly into the Unity Editor.
 To create your own OSC Editor Component, you only need to create a subclass from *"OSCEditorReceiverComponent"* or the *"OSCEditorTransmitterComponent"*, and implement all the functions what you need.
 
-Example:
+**This project require: [extOSC](https://github.com/Iam1337/extOSC) asset.**
 
-**Example of custom OSC Editor Receiver Component**: *OSCEditorReceiverComponentExample.cs*
+### Release Notes:
+
+You can read release notes in [versions.txt](Assets/extEditorOSC/versions.txt) file.
+
+### Examples:
+
+**Custom OSC Editor Receiver Component**<br>
+This example is implemented in a file: [OSCEditorReceiverComponentExample.cs](Assets/extEditorOSC/Examples/Scripts/Editor/OSCEditorReceiverComponentExample.cs)
 ```C#
 [OSCEditorComponent("Examples", "Example Receiver Component")]
 public class OSCEditorReceiverComponentExample : OSCEditorReceiverComponent
@@ -31,7 +40,8 @@ public class OSCEditorReceiverComponentExample : OSCEditorReceiverComponent
 }
 ```
 
-**Example of custom OSC Editor Transmitter Component**: *OSCEditorTransmitterComponentExample.cs*
+**Custom OSC Editor Transmitter Component**<br>
+This example is implemented in a file: [OSCEditorTransmitterComponentExample.cs](Assets/extEditorOSC/Examples/Scripts/Editor/OSCEditorTransmitterComponentExample.cs)
 ```C#
 [OSCEditorComponent("Examples", "Example Transmitter Component")]
 public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponent
@@ -50,15 +60,17 @@ public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponen
 }
 ```
 
-## Screenshots
+### Installation:
+
+1) Copy [extOSC](https://github.com/Iam1337/extOSC) in your project.
+2) Copy the [Assets/extEditorOSC](Assets/extEditorOSC) folder into your Assets directory within your Unity project.
+
+### Screenshots
 <img src="https://i.imgur.com/6IJlD95.png" width="400"> <img src="https://i.imgur.com/dFH3Vp7.png" width="400">
 
-## Release Notes
-You can read release notes in [versions.txt](Assets/extEditorOSC/versions.txt) file.
+### Author Contacts:
+\> [telegram.me/iam1337](http://telegram.me/iam1337) <br>
+\> [ext@iron-wall.org](mailto:ext@iron-wall.org)
 
-## TODO
-- Documentation
-- Better README.md
-
-## Installation
-Download project and copy 'Assets/extEditorOSC' folder to project Assets folder.
+## License
+This project is under the MIT License.
