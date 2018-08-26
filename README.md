@@ -72,5 +72,5 @@ public class OSCEditorTransmitterComponentExample : OSCEditorTransmitterComponen
 \> [telegram.me/iam1337](http://telegram.me/iam1337) <br>
 \> [ext@iron-wall.org](mailto:ext@iron-wall.org)
 
-## License
+### License
 This project is under the MIT License.
