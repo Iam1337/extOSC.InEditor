@@ -1,5 +1,7 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
 using UnityEditor;
 
 using UnityEngine;
@@ -231,3 +233,5 @@ namespace extEditorOSC
 		#endregion
 	}
 }
+
+#endif

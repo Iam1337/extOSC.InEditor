@@ -1,5 +1,7 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
 using UnityEngine;
 
 using UnityEditor;
@@ -15,7 +17,7 @@ namespace extEditorOSC.Windows
 	{
 		#region Static Public Methods
 
-		[MenuItem("Window/extEditorOSC/Editor Manager", false, 0)]
+		[MenuItem("Tools/extEditorOSC/Editor Manager", false, 0)]
 		public static void ShowWindow()
 		{
 			Instance.titleContent = new GUIContent("OSC Editor Manager", OSCEditorTextures.IronWall);
@@ -35,3 +37,5 @@ namespace extEditorOSC.Windows
 		#endregion
 	}
 }
+
+#endif

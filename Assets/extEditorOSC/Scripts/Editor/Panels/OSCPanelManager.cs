@@ -1,5 +1,7 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
 using UnityEngine;
 
 using UnityEditor;
@@ -90,7 +92,7 @@ namespace extEditorOSC.Panels
 			}
 
 
-			//var wide = contentRect.width > 520;
+			//var wide = contentRect.width > 600;
 
 			_scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
 
@@ -103,15 +105,17 @@ namespace extEditorOSC.Panels
 			//if (wide)
 			//	GUILayout.BeginHorizontal();
 			//else
-			GUILayout.BeginVertical();
-			
-			DrawReceivers(OSCEditorManager.Receivers);
-			DrawTransmitters(OSCEditorManager.Transmitters);
+			    GUILayout.BeginVertical();
+
+
+		    DrawReceivers(OSCEditorManager.Receivers);
+            GUILayout.Space(25f);
+		    DrawTransmitters(OSCEditorManager.Transmitters);
 
 			//if (wide)
 			//	GUILayout.EndHorizontal();
 			//else
-			GUILayout.EndVertical();
+			    GUILayout.EndVertical();
 
 			GUILayout.Space(5);
 			GUILayout.EndVertical();
@@ -234,15 +238,17 @@ namespace extEditorOSC.Panels
 
 		private void DrawBase(OSCEditorBase editorBase, out bool remove)
 		{
-			remove = false;
+            var baseColor = (editorBase.IsAvaible ? Color.green : Color.yellow) + new Color(0.75f, 0.75f, 0.75f);
+            remove = false;
 
+		    GUI.color = baseColor;
 			GUILayout.BeginVertical("box");
-
+            
 			GUI.color = editorBase.IsAvaible ? Color.green : Color.yellow;
 			GUILayout.BeginVertical("box");
 			GUILayout.Label(OSCEditorUtils.GetName(editorBase), OSCEditorStyles.CenterBoldLabel);
 			GUILayout.EndVertical();
-			GUI.color = _defaultColor;
+			GUI.color = baseColor;
 
 			var receiver = editorBase as OSCEditorReceiver;
 			if (receiver != null)
@@ -259,14 +265,12 @@ namespace extEditorOSC.Panels
 			}
 
 			GUILayout.EndVertical();
+		    GUI.color = _defaultColor;
 		}
 
 		private void DrawReceiver(OSCEditorReceiver receiver, out bool remove)
 		{
-			//if (width > 0)
-			//	GUILayout.BeginVertical("box", GUILayout.Width(width));
-			//else
-			//	GUILayout.BeginVertical("box");
+		    var defaultColor = GUI.color;
 
 			// SETTINGS BLOCK
 			GUILayout.BeginVertical("box");
@@ -281,29 +285,13 @@ namespace extEditorOSC.Panels
 			EditorGUILayout.SelectableLabel(_localHost, GUILayout.Height(EditorGUIUtility.singleLineHeight));
 			GUILayout.EndHorizontal();
 
-			// LOCAL PORT
-			receiver.LocalPort = EditorGUILayout.IntField(_localPortContent, receiver.LocalPort);
+            // LOCAL PORT
+		    GUI.color = _defaultColor;
+            receiver.LocalPort = EditorGUILayout.IntField(_localPortContent, receiver.LocalPort);
+		    GUI.color = defaultColor;
 
-			// MAP BUNDLE
-			//EditorGUILayout.PropertyField(_mapBundleProperty, _mapBundleContent);
-
-			// SETTINGS BOX END
-			EditorGUILayout.EndVertical();
-
-			/*
-			// PARAMETERS BLOCK
-			EditorGUILayout.BeginHorizontal("box");
-
-			GUI.color = OSCEditorManager.AutoConnectReceiver ? Color.green : Color.red;
-			if (GUILayout.Button("Auto Connect"))
-			{
-				OSCEditorManager.AutoConnectReceiver = !OSCEditorManager.AutoConnectReceiver;
-			}
-			GUI.color = _defaultColor;
-
-			// PARAMETERS BLOCK END
-			EditorGUILayout.EndHorizontal();
-			*/
+            // SETTINGS BOX END
+            EditorGUILayout.EndVertical();
 
 			// SETTINGS BLOCK END
 			EditorGUILayout.EndVertical();
@@ -314,13 +302,12 @@ namespace extEditorOSC.Panels
 			DrawControlls(receiver, out remove);
 
 			// EDITOR BUTTONS
-			GUI.color = _defaultColor;
-
-			//GUILayout.EndVertical();
+			GUI.color = defaultColor;
 		}
 
 		private void DrawTransmitter(OSCEditorTransmitter transmitter, out bool remove)
 		{
+		    var defaultColor = GUI.color;
 			GUILayout.BeginVertical("box");
 
 			// SETTINGS BLOCK
@@ -339,51 +326,39 @@ namespace extEditorOSC.Panels
 			// REMOTE HOST
 			GUI.color = remoteFieldColor;
 			transmitter.RemoteHost = EditorGUILayout.TextField(_remoteHostContent, transmitter.RemoteHost);
-			GUI.color = _defaultColor;
+			GUI.color = defaultColor;
 
 			// REMOTE PORT
+		    GUI.color = _defaultColor;
 			transmitter.RemotePort = EditorGUILayout.IntField(_remotePortContent, transmitter.RemotePort);
+		    GUI.color = defaultColor;
 
-			// MAP BUNDLE
-			//EditorGUILayout.PropertyField(_mapBundleProperty, _mapBundleContent);
+            // MAP BUNDLE
+            //EditorGUILayout.PropertyField(_mapBundleProperty, _mapBundleContent);
 
-			// USE BUNDLE
-			GUI.color = transmitter.UseBundle ? Color.green : Color.red;
+            // USE BUNDLE
+            GUI.color = transmitter.UseBundle ? Color.green : Color.red;
 			if (GUILayout.Button("Use Bundle"))
 			{
 				transmitter.UseBundle = !transmitter.UseBundle;
 			}
-			GUI.color = _defaultColor;
+			GUI.color = defaultColor;
 
 			// SETTINGS BOX END
 			EditorGUILayout.EndVertical();
-
-            /*
-			// PARAMETETS BLOCK
-			EditorGUILayout.BeginHorizontal("box");
-
-			GUI.color = OSCEditorManager.AutoConnectTransmitter ? Color.green : Color.red;
-			if (GUILayout.Button("Auto Connect"))
-			{
-				OSCEditorManager.AutoConnectTransmitter = !OSCEditorManager.AutoConnectTransmitter;
-			}
-			GUI.color = _defaultColor;
-
-			// PARAMETERS BLOCK END
-			EditorGUILayout.EndHorizontal();
-			*/
-
 
 		    // ADVANCED SETTIGS BOX
 		    EditorGUILayout.LabelField(_advancedContent, EditorStyles.boldLabel);
 		    GUILayout.BeginVertical("box");
 		    EditorGUI.BeginChangeCheck();
 
-		    // LOCAL PORT MODE
-		    transmitter.LocalPortMode = (OSCEditorLocalPortMode)EditorGUILayout.EnumPopup(_localPortModeContent, transmitter.LocalPortMode);
+            // LOCAL PORT MODE
+		    GUI.color = _defaultColor;
+            transmitter.LocalPortMode = (OSCEditorLocalPortMode)EditorGUILayout.EnumPopup(_localPortModeContent, transmitter.LocalPortMode);
+		    GUI.color = defaultColor;
 
-		    // LOCAL PORT
-		    if (transmitter.LocalPortMode == OSCEditorLocalPortMode.FromRemotePort)
+            // LOCAL PORT
+            if (transmitter.LocalPortMode == OSCEditorLocalPortMode.FromRemotePort)
 		    {
 		        // LOCAL FROM REMOTE PORT
 		        GUILayout.BeginHorizontal();
@@ -393,9 +368,11 @@ namespace extEditorOSC.Panels
 		    }
 		    else if (transmitter.LocalPortMode == OSCEditorLocalPortMode.Custom)
 		    {
+		        GUI.color = _defaultColor;
                 // LOCAL PORT
-		        transmitter.LocalPort =  EditorGUILayout.IntField(_localPortContent, transmitter.LocalPort);
-		    }
+                transmitter.LocalPort =  EditorGUILayout.IntField(_localPortContent, transmitter.LocalPort);
+		        GUI.color = defaultColor;
+            }
 
 		    // ADVANCED SETTIGS BOX END
 		    EditorGUILayout.EndVertical();
@@ -409,7 +386,7 @@ namespace extEditorOSC.Panels
 			DrawControlls(transmitter, out remove);
 
 			// EDITOR BUTTONS
-			GUI.color = Color.white;
+			GUI.color = defaultColor;
 
 			GUILayout.EndVertical();
 		}
@@ -452,3 +429,5 @@ namespace extEditorOSC.Panels
 		#endregion
 	}
 }
+
+#endif

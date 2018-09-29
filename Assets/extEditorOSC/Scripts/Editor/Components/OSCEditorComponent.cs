@@ -1,9 +1,11 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
+using UnityEngine;
 using UnityEditor;
 
 using System.Linq;
-using UnityEngine;
 
 namespace extEditorOSC.Components
 {
@@ -129,3 +131,5 @@ namespace extEditorOSC.Components
 		#endregion
 	}
 }
+
+#endif

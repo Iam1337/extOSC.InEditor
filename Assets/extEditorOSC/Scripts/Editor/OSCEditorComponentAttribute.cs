@@ -1,5 +1,7 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
 using System;
 
 namespace extEditorOSC
@@ -45,3 +47,5 @@ namespace extEditorOSC
 		#endregion
 	}
 }
+
+#endif

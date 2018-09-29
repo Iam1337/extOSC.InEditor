@@ -1,5 +1,7 @@
 /* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
 using extOSC;
 
 using extEditorOSC.Components;
@@ -22,3 +24,5 @@ namespace extEditorOSC.Examples
 		#endregion
 	}
 }
+
+#endif

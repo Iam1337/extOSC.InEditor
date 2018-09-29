@@ -1,5 +1,7 @@
 ﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
 
+#if EXTOSC
+
 using extOSC.Core;
 using extOSC.Core.Console;
 
@@ -45,3 +47,5 @@ namespace extEditorOSC.Core
 		#endregion
 	}
 }
+
+#endif
