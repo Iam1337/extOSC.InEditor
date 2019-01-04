@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2018 ExT (V.Sigalkin) */
+﻿/* Copyright (c) 2019 ExT (V.Sigalkin) */
 
 #if !EXTOSC
 
@@ -23,29 +23,28 @@ namespace oscEditorOSC.Windows
 
         #endregion
 
-
         #region Unity Methods
 
         protected void OnGUI()
         {
-            GUILayout.BeginVertical();
-
-            GUILayout.BeginVertical("box");
-            GUILayout.Label("Warning! extOSC not found.", EditorStyles.boldLabel);
-            GUILayout.Space(5f);
-            GUILayout.Label("extEditorOSC require extOSC asset.");
-            GUILayout.EndVertical();
-
-            GUI.color = Color.yellow;
-            var button = GUILayout.Button("Download extOSC", GUILayout.Height(30f));
-            if (button)
+            using (new GUILayout.VerticalScope())
             {
-                Application.OpenURL("https://github.com/Iam1337/extOSC");
+                using (new GUILayout.VerticalScope("box"))
+                {
+                    GUILayout.Label("Warning! extOSC not found.", EditorStyles.boldLabel);
+                    GUILayout.Space(5f);
+                    GUILayout.Label("extEditorOSC require extOSC asset.");
+                }
+
+                GUI.color = Color.yellow;
+                var button = GUILayout.Button("Download extOSC", GUILayout.Height(30f));
+                if (button)
+                {
+                    Application.OpenURL("https://github.com/Iam1337/extOSC");
+                }
+
+                GUI.color = Color.white;
             }
-
-            GUI.color = Color.white;
-
-            GUILayout.EndVertical();
         }
 
         #endregion
