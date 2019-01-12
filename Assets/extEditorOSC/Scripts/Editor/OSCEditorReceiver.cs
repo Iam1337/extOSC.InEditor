@@ -2,12 +2,9 @@
 
 #if EXTOSC
 
-using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.Events;
 
-using System;
 using System.Threading;
 using System.Collections.Generic;
 
@@ -16,6 +13,7 @@ using extOSC.Core;
 using extOSC.Core.Network;
 
 using extEditorOSC.Core;
+
 
 namespace extEditorOSC
 {
@@ -35,7 +33,7 @@ namespace extEditorOSC
 
 				localPort = value;
 
-				if (receiverBackend.IsRunning && IsAvaible)
+				if (receiverBackend.IsRunning && IsAvailable)
 				{
 					Close();
 					Connect();
@@ -43,20 +41,14 @@ namespace extEditorOSC
 			}
 		}
 
-		public override bool IsAvaible
+		public override bool IsAvailable
 		{
-			get
-			{
-				return receiverBackend.IsAvaible;
-			}
+			get { return receiverBackend.IsAvaible; }
 		}
 
 		public bool IsRunning
 		{
-			get
-			{
-				return receiverBackend.IsRunning;
-			}
+			get { return receiverBackend.IsRunning; }
 		}
 
 		#endregion
@@ -64,8 +56,6 @@ namespace extEditorOSC
 		#region Protected Vars
 
 		protected int localPort = 7100;
-
-		protected Thread thread;
 
 		protected Queue<OSCPacket> packets = new Queue<OSCPacket>();
 
@@ -89,7 +79,7 @@ namespace extEditorOSC
 
 		#region Private Vars
 
-		private object _lock = new object();
+		private readonly object _lock = new object();
 
 		private OSCReceiverBackend _receiverBackend;
 
@@ -161,7 +151,7 @@ namespace extEditorOSC
 
 		protected override void Update()
 		{
-			if (!IsAvaible || !IsRunning) return;
+			if (!IsAvailable || !IsRunning) return;
 
 			lock (_lock)
 			{
@@ -169,7 +159,7 @@ namespace extEditorOSC
 				{
 					var packet = packets.Dequeue();
 
-                    //TODO: Add bundles.
+					//TODO: Add bundles.
 					//if (mapBundle != null)
 					//	mapBundle.Map(packet);
 
@@ -180,7 +170,7 @@ namespace extEditorOSC
 			}
 		}
 
-  		#endregion
+		#endregion
 
 		#region Private Methods
 

@@ -52,11 +52,11 @@ namespace extEditorOSC
 
 		public bool UseBundle;
 
-	    public OSCEditorLocalPortMode LocalPortMode;
+		public OSCEditorLocalPortMode LocalPortMode;
 
-	    public int LocalPort;
+		public int LocalPort;
 
-	    #endregion
+		#endregion
 	}
 
 	[Serializable]

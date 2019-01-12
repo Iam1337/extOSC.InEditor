@@ -4,12 +4,12 @@
 
 namespace extEditorOSC
 {
-    public enum OSCEditorLocalPortMode
-    {
-        FromRemotePort,
-        Random,
-        Custom
-    }
+	public enum OSCEditorLocalPortMode
+	{
+		FromRemotePort,
+		Random,
+		Custom
+	}
 }
 
 #endif

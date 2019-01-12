@@ -2,20 +2,20 @@
 
 #if EXTOSC
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 using UnityEditor;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using extOSC.Editor;
 using extOSC.Editor.Panels;
 using extOSC.Editor.Windows;
 
 using extEditorOSC.Components;
 using extEditorOSC.Core;
-using extOSC.Editor;
-
 
 namespace extEditorOSC.Panels
 {
@@ -44,7 +44,7 @@ namespace extEditorOSC.Panels
 
 		private Color _defaultColor;
 
-		private string _localHost;
+		//private string _localHost;
 
 		private Vector2 _scrollPosition;
 
@@ -126,7 +126,7 @@ namespace extEditorOSC.Panels
 			{
 				DrawGroup(group);
 			}
-			
+
 			GUILayout.EndVertical();
 
 			GUILayout.Space(5);
@@ -214,7 +214,8 @@ namespace extEditorOSC.Panels
 			GUILayout.FlexibleSpace();
 
 			GUI.color = component.Active ? Color.green : Color.red;
-			var enable = GUILayout.Button(component.Active ? "Enabled" : "Disabled", GUILayout.Width(80), GUILayout.Height(16));
+			var enable = GUILayout.Button(component.Active ? "Enabled" : "Disabled", GUILayout.Width(80),
+			                              GUILayout.Height(16));
 			GUI.color = subColor;
 
 			GUILayout.EndHorizontal();
@@ -251,7 +252,7 @@ namespace extEditorOSC.Panels
 		{
 			return EditorOSCPopup(OSCEditorUtils.GetTransmitters(), transmitter, content);
 		}
-		
+
 		private T EditorOSCPopup<T>(Dictionary<string, T> dictionary, T osc, GUIContent content) where T : OSCEditorBase
 		{
 			T[] objects = null;
@@ -290,7 +291,8 @@ namespace extEditorOSC.Panels
 			return objects[currentIndex];
 		}
 
-		private void FillOSCArrays<T>(Dictionary<string, T> dictionary, out string[] names, out T[] objects) where T : OSCEditorBase
+		private void FillOSCArrays<T>(Dictionary<string, T> dictionary, out string[] names, out T[] objects)
+			where T : OSCEditorBase
 		{
 			var namesList = new List<string>();
 			namesList.Add("- None -");

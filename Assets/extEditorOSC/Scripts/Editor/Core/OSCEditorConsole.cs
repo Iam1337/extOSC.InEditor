@@ -14,7 +14,8 @@ namespace extEditorOSC.Core
 		public static void Received(OSCEditorReceiver receiver, OSCPacket packet)
 		{
 			var message = new OSCConsolePacket();
-			message.Info = string.Format("<color=green>Editor Receiver</color>: {0}. From: {1}", receiver.LocalPort, packet.Ip != null ? packet.Ip.ToString() : "Debug");
+			message.Info = string.Format("<color=green>Editor Receiver</color>: {0}. From: {1}", receiver.LocalPort,
+			                             packet.Ip != null ? packet.Ip.ToString() : "Debug");
 			message.PacketType = OSCConsolePacketType.Received;
 			message.Packet = packet;
 
@@ -24,7 +25,8 @@ namespace extEditorOSC.Core
 		public static void Transmitted(OSCEditorTransmitter transmitter, OSCPacket packet)
 		{
 			var message = new OSCConsolePacket();
-			message.Info = string.Format("<color=green>Editor Transmitter</color>: {0}:{1}", transmitter.RemoteHost, transmitter.RemotePort);
+			message.Info = string.Format("<color=green>Editor Transmitter</color>: {0}:{1}", transmitter.RemoteHost,
+			                             transmitter.RemotePort);
 			message.PacketType = OSCConsolePacketType.Transmitted;
 			message.Packet = packet;
 

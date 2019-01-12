@@ -16,17 +16,17 @@ namespace extEditorOSC.Components
 
 		public OSCEditorReceiver Receiver
 		{
-			get { return _recevier; }
+			get { return _receiver; }
 			set
 			{
-				if (_recevier == value)
+				if (_receiver == value)
 					return;
 
 				var rebind = _binds != null;
 
 				Unbind();
 
-				_recevier = value;
+				_receiver = value;
 
 				if (rebind)
 					Bind();
@@ -37,9 +37,7 @@ namespace extEditorOSC.Components
 
 		#region Private Vars
 
-		private OSCEditorReceiver _recevier;
-
-		private OSCEditorReceiver _bindedReceiver;
+		private OSCEditorReceiver _receiver;
 
 		private List<IOSCBind> _binds;
 
@@ -55,22 +53,22 @@ namespace extEditorOSC.Components
 
 			PopulateBinds(_binds);
 
-			if (_recevier != null & _binds != null)
+			if (_receiver != null & _binds != null)
 			{
 				foreach (var bind in _binds)
 				{
-					_recevier.Bind(bind);
+					_receiver.Bind(bind);
 				}
 			}
 		}
 
 		public void Unbind()
 		{
-			if (_recevier != null && _binds != null)
+			if (_receiver != null && _binds != null)
 			{
 				foreach (var bind in _binds)
 				{
-					_recevier.Unbind(bind);
+					_receiver.Unbind(bind);
 				}
 			}
 

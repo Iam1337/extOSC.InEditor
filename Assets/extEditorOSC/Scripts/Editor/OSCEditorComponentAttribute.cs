@@ -25,9 +25,9 @@ namespace extEditorOSC
 
 		#region Private Vars
 
-		private string _name;
+		private readonly string _name;
 
-		private string _group = "Other";
+		private readonly string _group = "Other";
 
 		#endregion
 

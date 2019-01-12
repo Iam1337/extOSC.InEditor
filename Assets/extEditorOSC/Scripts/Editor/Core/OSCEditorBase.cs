@@ -12,7 +12,7 @@ namespace extEditorOSC.Core
 	{
 		#region Public Vars
 
-		public abstract bool IsAvaible { get; }
+		public abstract bool IsAvailable { get; }
 
 		#endregion
 
@@ -54,7 +54,8 @@ namespace extEditorOSC.Core
 		}
 
 		protected virtual void Update()
-		{ }
+		{
+		}
 
 		#endregion
 	}

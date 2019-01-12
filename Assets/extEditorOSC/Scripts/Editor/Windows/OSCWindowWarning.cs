@@ -1,7 +1,6 @@
 ﻿/* Copyright (c) 2019 ExT (V.Sigalkin) */
 
 #if !EXTOSC
-
 using UnityEditor;
 using UnityEngine;
 

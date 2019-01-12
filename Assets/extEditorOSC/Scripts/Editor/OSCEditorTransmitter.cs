@@ -18,7 +18,7 @@ namespace extEditorOSC
 	{
 		#region Public Vars
 
-		public override bool IsAvaible
+		public override bool IsAvailable
 		{
 			get
 			{
@@ -29,53 +29,53 @@ namespace extEditorOSC
 			}
 		}
 
-	    public OSCEditorLocalPortMode LocalPortMode
-	    {
-	        get { return localPortMode; }
-	        set
-	        {
-	            if (localPortMode == value)
-	                return;
+		public OSCEditorLocalPortMode LocalPortMode
+		{
+			get { return localPortMode; }
+			set
+			{
+				if (localPortMode == value)
+					return;
 
-	            localPortMode = value;
+				localPortMode = value;
 
-	            if (IsAvaible)
-	            {
-	                Close();
-	                Connect();
-	            }
-	        }
-	    }
+				if (IsAvailable)
+				{
+					Close();
+					Connect();
+				}
+			}
+		}
 
-	    public int LocalPort
-	    {
-	        get
-	        {
-	            if (localPortMode == OSCEditorLocalPortMode.Custom)
-	                return localPort;
-	            if (localPortMode == OSCEditorLocalPortMode.Random)
-	                return 0;
+		public int LocalPort
+		{
+			get
+			{
+				if (localPortMode == OSCEditorLocalPortMode.Custom)
+					return localPort;
+				if (localPortMode == OSCEditorLocalPortMode.Random)
+					return 0;
 
-	            //TODO: Add return random port.
+				//TODO: Add return random port.
 
-	            return remotePort;
-            }
-	        set
-	        {
-	            if (localPort == value)
-	                return;
+				return remotePort;
+			}
+			set
+			{
+				if (localPort == value)
+					return;
 
-	            localPort = value;
+				localPort = value;
 
-	            if (IsAvaible && localPortMode == OSCEditorLocalPortMode.Custom)
-	            {
-	                Close();
-	                Connect();
-	            }
-	        }
-	    }
+				if (IsAvailable && localPortMode == OSCEditorLocalPortMode.Custom)
+				{
+					Close();
+					Connect();
+				}
+			}
+		}
 
-        public string RemoteHost
+		public string RemoteHost
 		{
 			get { return remoteHost; }
 			set
@@ -87,11 +87,11 @@ namespace extEditorOSC
 
 				transmitterBackend.RefreshConnection(remoteHost, remotePort);
 
-			    if (IsAvaible && localPortMode == OSCEditorLocalPortMode.FromRemotePort)
-			    {
-                    Close();
-                    Connect();
-			    }
+				if (IsAvailable && localPortMode == OSCEditorLocalPortMode.FromRemotePort)
+				{
+					Close();
+					Connect();
+				}
 			}
 		}
 
@@ -117,24 +117,19 @@ namespace extEditorOSC
 			set { useBundle = value; }
 		}
 
-        #endregion
+		#endregion
 
-        #region Protected Vars
+		#region Protected Vars
 
-	    [SerializeField]
-	    protected OSCEditorLocalPortMode localPortMode = OSCEditorLocalPortMode.FromRemotePort;
+		[SerializeField] protected OSCEditorLocalPortMode localPortMode = OSCEditorLocalPortMode.FromRemotePort;
 
-	    [SerializeField]
-	    protected int localPort = 0;
+		[SerializeField] protected int localPort = 0;
 
-        [SerializeField]
-		protected string remoteHost = "127.0.0.1";
+		[SerializeField] protected string remoteHost = "127.0.0.1";
 
-		[SerializeField]
-		protected int remotePort = 7100;
+		[SerializeField] protected int remotePort = 7100;
 
-		[SerializeField]
-		protected bool useBundle;
+		[SerializeField] protected bool useBundle;
 
 		protected OSCTransmitterBackend transmitterBackend
 		{
@@ -161,18 +156,18 @@ namespace extEditorOSC
 
 		public override void Connect()
 		{
-		    var connectLocalPort = remotePort;
+			var connectLocalPort = remotePort;
 
-		    if (localPortMode == OSCEditorLocalPortMode.Random)
-		    {
-		        connectLocalPort = 0;
-		    }
-		    else if (localPortMode == OSCEditorLocalPortMode.Custom)
-		    {
-		        connectLocalPort = localPort;
-		    }
+			if (localPortMode == OSCEditorLocalPortMode.Random)
+			{
+				connectLocalPort = 0;
+			}
+			else if (localPortMode == OSCEditorLocalPortMode.Custom)
+			{
+				connectLocalPort = localPort;
+			}
 
-            transmitterBackend.Connect(connectLocalPort, remoteHost, remotePort);
+			transmitterBackend.Connect(connectLocalPort, remoteHost, remotePort);
 		}
 
 		public override void Close()
@@ -196,9 +191,10 @@ namespace extEditorOSC
 				return;
 			}
 
-			var data = OSCConverter.Pack(packet);
+			var length = 0;
+			var data = OSCConverter.Pack(packet, out length);
 
-			transmitterBackend.Send(data);
+			transmitterBackend.Send(data, length);
 
 			OSCEditorConsole.Transmitted(this, packet);
 		}

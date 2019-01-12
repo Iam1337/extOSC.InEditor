@@ -2,7 +2,6 @@
 
 #if EXTOSC
 
-using UnityEngine;
 using UnityEditor;
 
 using System.Linq;
@@ -19,7 +18,7 @@ namespace extEditorOSC.Components
 			set
 			{
 				if (_active == value) return;
-				
+
 				SetActive(value);
 			}
 		}
@@ -69,7 +68,7 @@ namespace extEditorOSC.Components
 
 			if (_updateCallback == null)
 				_updateCallback = Update;
-  
+
 			if (active)
 			{
 				OnEnable();
@@ -99,13 +98,16 @@ namespace extEditorOSC.Components
 		#region Protected Methods
 
 		protected virtual void OnEnable()
-		{ }
+		{
+		}
 
 		protected virtual void Update()
-		{ }
+		{
+		}
 
 		protected virtual void OnDisable()
-		{ }
+		{
+		}
 
 		#endregion
 
@@ -122,7 +124,7 @@ namespace extEditorOSC.Components
 				return;
 			}
 
-			var attribute = (OSCEditorComponentAttribute)attributes[0];
+			var attribute = (OSCEditorComponentAttribute) attributes[0];
 
 			_name = attribute.Name;
 			_group = attribute.Group;

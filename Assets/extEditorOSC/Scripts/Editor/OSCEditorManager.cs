@@ -60,14 +60,14 @@ namespace extEditorOSC
 			if (!File.Exists(_configsPath))
 			{
 				var configs = new OSCEditorConfigs();
-				
-				var transmitterConfig =new OSCEditorTransmitterConfig();
+
+				var transmitterConfig = new OSCEditorTransmitterConfig();
 				transmitterConfig.RemoteHost = "127.0.0.1";
 				transmitterConfig.RemotePort = 7100;
 				transmitterConfig.UseBundle = false;
 				transmitterConfig.AutoConnect = true;
-			    transmitterConfig.LocalPortMode = OSCEditorLocalPortMode.FromRemotePort;
-                transmitterConfig.LocalPort = 7100;
+				transmitterConfig.LocalPortMode = OSCEditorLocalPortMode.FromRemotePort;
+				transmitterConfig.LocalPort = 7100;
 
 				var receiverConfig = new OSCEditorReceiverConfig();
 				receiverConfig.LocalPort = 7100;
@@ -98,7 +98,7 @@ namespace extEditorOSC
 			{
 				var receiverConfig = new OSCEditorReceiverConfig();
 				receiverConfig.LocalPort = receiver.LocalPort;
-				receiverConfig.AutoConnect = receiver.IsAvaible;
+				receiverConfig.AutoConnect = receiver.IsAvailable;
 
 				configs.Receivers.Add(receiverConfig);
 			}
@@ -109,9 +109,9 @@ namespace extEditorOSC
 				transmitterConfig.RemoteHost = transmitter.RemoteHost;
 				transmitterConfig.RemotePort = transmitter.RemotePort;
 				transmitterConfig.UseBundle = transmitter.UseBundle;
-				transmitterConfig.AutoConnect = transmitter.IsAvaible;
-			    transmitterConfig.LocalPortMode = transmitter.LocalPortMode;
-			    transmitterConfig.LocalPort = transmitter.LocalPort;
+				transmitterConfig.AutoConnect = transmitter.IsAvailable;
+				transmitterConfig.LocalPortMode = transmitter.LocalPortMode;
+				transmitterConfig.LocalPort = transmitter.LocalPort;
 
 				configs.Transmitters.Add(transmitterConfig);
 			}
@@ -155,10 +155,18 @@ namespace extEditorOSC
 
 			var configs = JsonUtility.FromJson<OSCEditorConfigs>(File.ReadAllText(_configsPath));
 
-			_receivers.ForEach(receiver => { receiver.Close(); receiver.Dispose(); });
+			_receivers.ForEach(receiver =>
+			{
+				receiver.Close();
+				receiver.Dispose();
+			});
 			_receivers.Clear();
 
-			_transmitters.ForEach(transmitter => { transmitter.Close();transmitter.Dispose();});
+			_transmitters.ForEach(transmitter =>
+			{
+				transmitter.Close();
+				transmitter.Dispose();
+			});
 			_transmitters.Clear();
 
 			foreach (var receiverConfig in configs.Receivers)
@@ -178,8 +186,8 @@ namespace extEditorOSC
 				transmitter.RemoteHost = transmitterConfig.RemoteHost;
 				transmitter.RemotePort = transmitterConfig.RemotePort;
 				transmitter.UseBundle = transmitterConfig.UseBundle;
-			    transmitter.LocalPortMode = transmitterConfig.LocalPortMode;
-			    transmitter.LocalPort = transmitterConfig.LocalPort;
+				transmitter.LocalPortMode = transmitterConfig.LocalPortMode;
+				transmitter.LocalPort = transmitterConfig.LocalPort;
 
 				if (transmitterConfig.AutoConnect)
 					transmitter.Connect();
@@ -198,7 +206,7 @@ namespace extEditorOSC
 
 				var component = GetComponent(componentType);
 				if (component == null) continue;
-				
+
 				var receiverComponent = component as OSCEditorReceiverComponent;
 				if (receiverComponent != null)
 				{
@@ -293,7 +301,7 @@ namespace extEditorOSC
 
 			return _receivers[index];
 		}
-		
+
 		#endregion
 	}
 }
