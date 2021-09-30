@@ -19,6 +19,9 @@ This asset allows you to use all features of extOSC directly into the Unity Edit
 To create your own OSC Editor Component, you only need to create a subclass from *"OSCEditorReceiverComponent"* or the *"OSCEditorTransmitterComponent"*, and implement all the functions what you need.
 
 ## Installation:
+
+Be sure to install [extOSC](https://github.com/Iam1337/extOSC) before installing.
+
 **Old school**
 
 Just copy the [Assets/extOSC.InEditor](Assets/extOSC.InEditor) folder into your Assets directory within your Unity project, or [download latest extOSC.InEditor.unitypackage](https://github.com/iam1337/extOSC.InEditor/releases).
