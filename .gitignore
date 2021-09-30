@@ -1,4 +1,4 @@
-# extEditorOSC .gitignore file - 2017
+# extOSC.InEditor .gitignore file 2021
 
 # -------
 # FOLDERS
@@ -11,8 +11,15 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
-/Assets/extOSC*
+/[Ll]ogs/
+/[Uu]serSettings/
+/Assets/AssetStoreTools*
 AssetBundles/
+
+# TextMeshPro Essentials
+Assets/TextMesh Pro.meta
+Assets/TextMesh Pro/
+extOSC/
 
 # Visual Studio
 
@@ -23,8 +30,6 @@ ExportedObj/
 # -----
 
 # Unity
-
-editor.configs.json
 
 Assembly-CSharp-Editor-vs.csproj
 Assembly-CSharp-Editor.csproj
@@ -47,6 +52,7 @@ Assembly-CSharp.csproj
 .vscode/
 .vs/
 .idea/
+.vsconfig
 
 # OS generated
 
@@ -59,4 +65,3 @@ Icon?
 ehthumbs.db
 Thumbs.db
 Thumbs.db.meta
-
