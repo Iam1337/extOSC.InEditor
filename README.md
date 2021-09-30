@@ -6,6 +6,14 @@ Created by [iam1337](https://github.com/iam1337)
 [![⚙ Build and Release](https://github.com/Iam1337/extOSC.InEditor/actions/workflows/ci.yml/badge.svg)](https://github.com/Iam1337/extOSC.InEditor/actions/workflows/ci.yml)
 [![](https://img.shields.io/github/license/iam1337/extOSC.InEditor.svg)](https://github.com/Iam1337/extOSC.InEditor/blob/master/LICENSE)
 
+### Table of Contents
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Examples](#examples)
+- - [Custom OSC Editor Receiver Component](#custom-osc-editor-receiver-component)
+- - [Custom OSC Editor Transmitter Component](#custom-osc-editor-transmitter-component)
+- [Author Contacts](#author-contacts)
+
 ## Introduction
 This asset allows you to use all features of extOSC directly into the Unity Editor.
 To create your own OSC Editor Component, you only need to create a subclass from *"OSCEditorReceiverComponent"* or the *"OSCEditorTransmitterComponent"*, and implement all the functions what you need.
