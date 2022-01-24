@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/Iam1337/extOSC.InEditor/compare/v1.0.4...v1.0.5) (2022-01-24)
+
+
+### Bug Fixes
+
+* **ci:** another commit ([6351212](https://github.com/Iam1337/extOSC.InEditor/commit/6351212e42d41f1a5a8fb63b46c287da97ae1584))
+
 ## [1.0.4](https://github.com/Iam1337/extOSC.InEditor/compare/v1.0.3...v1.0.4) (2022-01-24)
 
 
