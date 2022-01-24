@@ -1,7 +1,7 @@
 {
   "name": "com.iam1337.extosc.ineditor",
   "displayName": "extOSC.InEditor",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "unity": "2021.1",
   "description": "Allows you to use all features of extOSC directly into the Unity Editor.",
   "license": "MIT",
