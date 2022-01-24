@@ -66,6 +66,6 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       run: |
-        npm publish
+        npm publish --registry https://npm.iron-wall.org
       
 
