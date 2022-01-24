@@ -66,3 +66,4 @@ jobs:
       if: steps.semantic.outputs.new_release_published == 'true'
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
