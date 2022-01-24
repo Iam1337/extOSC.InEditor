@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/Iam1337/extOSC.InEditor/compare/v1.0.3...v1.0.4) (2022-01-24)
+
+
+### Bug Fixes
+
+* **ci:** whoami test ([174486a](https://github.com/Iam1337/extOSC.InEditor/commit/174486a0d0adb8e2f2dd52382ab4a295d2addf18))
+
 ## [1.0.3](https://github.com/Iam1337/extOSC.InEditor/compare/v1.0.2...v1.0.3) (2022-01-24)
 
 
