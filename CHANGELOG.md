@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/Iam1337/extOSC.InEditor/compare/v1.0.6...v1.0.7) (2022-01-24)
+
+
+### Bug Fixes
+
+* **ci:** add registry ([d0d5508](https://github.com/Iam1337/extOSC.InEditor/commit/d0d5508a1cfbb49d4ff7eee674156ad59ccfa523))
+
 ## [1.0.6](https://github.com/Iam1337/extOSC.InEditor/compare/v1.0.5...v1.0.6) (2022-01-24)
 
 
