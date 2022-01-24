@@ -57,15 +57,5 @@ jobs:
         UPM_TAG: upm/v${{ steps.semantic.outputs.new_release_version }}
       run: |
         git tag $UPM_TAG upm
-        git push origin --tags
-    - if: steps.semantic.outputs.new_release_published == 'true'
-      uses: actions/setup-node@v2
-      with:
-        registry-url: 'https://npm.iron-wall.org'
-    - if: steps.semantic.outputs.new_release_published == 'true'
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-      run: |
-        npm publish --registry https://npm.iron-wall.org
-      
+        git push origin --tags      
 
