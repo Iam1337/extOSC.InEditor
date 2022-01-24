@@ -62,7 +62,9 @@ jobs:
       if: steps.semantic.outputs.new_release_published == 'true'
       with:
         registry-url: 'https://npm.iron-wall.org'
-    - run: npm publish
+    - run: |
+        npm whoami
+        npm publish
       if: steps.semantic.outputs.new_release_published == 'true'
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
